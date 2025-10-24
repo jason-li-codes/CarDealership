@@ -1,5 +1,6 @@
 package com.pluralsight;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Scanner;
 
@@ -28,8 +29,8 @@ public class UserInterface {
                     (5) See vehicles by mileage
                     (6) See vehicles by vehicle type
                     (7) See all vehicles
-                    (8) Sell a vehicle to the dealership
-                    (9) Buy a vehicle from the dealership
+                    (8) Add a vehicle to the dealership
+                    (9) Remove a vehicle from the dealership
                     (0) Exit dealership program
                     """, dealership.getName());
 
@@ -55,6 +56,7 @@ public class UserInterface {
     }
 
     private String getValidString() {
+
         String string;
         do {
             string = input.nextLine().trim();
@@ -144,10 +146,12 @@ public class UserInterface {
     private void processGetByMakeModelRequest() {
 
         // Gets the make/model input from the user, converting it to lowercase for case-insensitive comparison
-        System.out.println("Enter make/model:");
-        String makeModelInput = input.nextLine().trim().toLowerCase();
+        System.out.println("Enter make:");
+        String makeInput = input.nextLine().trim().toLowerCase();
+        System.out.println("Enter model:");
+        String modelInput = input.nextLine().trim().toLowerCase();
 
-        displayList(dealership.getVehicleByMakeModel(makeModelInput));
+        displayList(dealership.getVehicleByMakeModel(makeInput, modelInput));
     }
 
     private void processGetByYearRequest() {
@@ -224,50 +228,97 @@ public class UserInterface {
 
     private void processAddVehicleRequest() {
 
-        System.out.println("Enter vehicle VIN: ");
-        int newVin = getValidInt();
-        System.out.println("Enter vehicle year:");
-        int newYear = getValidInt();
-        System.out.println("Enter vehicle make:");
-        String newMake = getValidString();
-        System.out.println("Enter vehicle model:");
-        String newModel = getValidString();
-        System.out.println("Enter vehicle type (ie. truck, sedan, SUV, etc.):");
-        String newType = getValidString();
-        System.out.println("Enter vehicle color:");
-        String newColor = getValidString();
-        System.out.println("Enter vehicle odometer reading:");
-        int newOdometer = getValidInt();
-        System.out.println("Enter vehicle price:");
-        double newPrice = getValidDouble();
+        while (true) {
+            System.out.println("Enter vehicle VIN: ");
+            int newVin = getValidInt();
+            System.out.println("Enter vehicle year:");
+            int newYear = getValidInt();
+            System.out.println("Enter vehicle make:");
+            String newMake = getValidString();
+            System.out.println("Enter vehicle model:");
+            String newModel = getValidString();
+            System.out.println("Enter vehicle type (ie. truck, sedan, SUV, etc.):");
+            String newType = getValidString();
+            System.out.println("Enter vehicle color:");
+            String newColor = getValidString();
+            System.out.println("Enter vehicle odometer reading:");
+            int newOdometer = getValidInt();
+            System.out.println("Enter vehicle price:");
+            double newPrice = getValidDouble();
 
-        dealership.addVehicle(new Vehicle(newVin, newYear, newMake,
-                newModel, newType, newColor, newOdometer, newPrice));
+            Vehicle addedVehicle = new Vehicle(newVin, newYear, newMake,
+                    newModel, newType, newColor, newOdometer, newPrice);
+            List<Vehicle> addedVehicleList = Collections.singletonList(addedVehicle);
+            displayList(addedVehicleList);
+
+            System.out.println("""
+                    Is this the vehicle you would like to add?
+                    (Y) Yes
+                    (N) No, I need to enter information again
+                    (X) Exit to main menu
+                    """);
+
+            char removeOption = getValidString().charAt(0);
+            switch (removeOption) {
+                case 'Y':
+                    dealership.addVehicle(addedVehicle);
+                    break;
+                case 'N':
+                    continue;
+                case 'X':
+                    System.out.println("Returning to main menu...");
+                    return;
+            }
+        }
     }
 
     private void displayList(List<Vehicle> vehicleList) {
 
-        System.out.printf("%-5s %-10s %-6s %-12s %-15s %-15s %-12s %-10s %-10s%n",
-                "No.", "VIN", "Year", "Make", "Model", "Type", "Color", "Odometer", "Price");
-        System.out.println("+-----+----------+------+------------+---------------+---------------+------------+----------+----------+");
-        for (int i = 0; i < vehicleList.size(); i++) {
-            Vehicle v = vehicleList.get(i);
-            System.out.printf("|%-5d|%-10d|%-6d|%-12s|%-15s|%-15s|%-12s|%-10d|%10.2f|\n",
-                    i + 1, v.getVin(), v.getYear(), v.getMake(), v.getModel(),
-                    v.getVehicleType(), v.getColor(), v.getOdometer(), v.getPrice());
+        if (vehicleList.isEmpty()) {
+            System.out.println("There are no vehicles to display.");
+        } else {
+            System.out.printf("%-5s %-10s %-6s %-12s %-15s %-15s %-12s %-10s %-10s%n",
+                    "No.", "VIN", "Year", "Make", "Model", "Type", "Color", "Odometer", "Price");
+            System.out.println("+-----+----------+------+------------+---------------+---------------+------------+----------+----------+");
+            for (int i = 0; i < vehicleList.size(); i++) {
+                Vehicle v = vehicleList.get(i);
+                System.out.printf("|%-5d|%-10d|%-6d|%-12s|%-15s|%-15s|%-12s|%-10d|%10.2f|\n",
+                        i + 1, v.getVin(), v.getYear(), v.getMake(), v.getModel(),
+                        v.getVehicleType(), v.getColor(), v.getOdometer(), v.getPrice());
+            }
+            System.out.println("+-----+----------+------+------------+---------------+---------------+------------+----------+----------+");
         }
-        System.out.println("+-----+----------+------+------------+---------------+---------------+------------+----------+----------+");
     }
 
     private void processRemoveVehicleRequest() {
 
-        List<Vehicle> allVehicles = dealership.getAllVehicles();
-        displayList(allVehicles);
-        System.out.println("Which vehicle would you like to purchase?");
-        int purchaseIndex = getValidInt();
+        while (true) {
+            List<Vehicle> allVehicles = dealership.getAllVehicles();
+            displayList(allVehicles);
+            System.out.println("Which vehicle would you like to remove?");
+            int removeIndex = getValidInt();
 
-        dealership.removeVehicle(allVehicles.get(purchaseIndex - 1));
+            List<Vehicle> chosenVehicle = Collections.singletonList(allVehicles.get(removeIndex - 1));
+            displayList(chosenVehicle);
+            System.out.println("""
+                    Is this the vehicle you would like to remove?
+                    (Y) Yes
+                    (N) No, I need to select a different vehicle
+                    (X) Exit to main menu
+                    """);
+
+            char removeOption = getValidString().charAt(0);
+            switch (removeOption) {
+                case 'Y':
+                    dealership.removeVehicle(chosenVehicle.get(0));
+                    break;
+                case 'N':
+                    continue;
+                case 'X':
+                    System.out.println("Returning to main menu...");
+                    return;
+            }
+        }
     }
-
 
 }
