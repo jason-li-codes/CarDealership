@@ -41,19 +41,20 @@ public class Dealership {
         this.phone = phone;
     }
 
-    public List<Vehicle> getVehicleByPrice(double minPrice, double maxPrice) {
+    public List<Vehicle> getVehicleByPrice(Double minPrice, Double maxPrice) {
+
     }
 
-    public List<Vehicle> getVehicleByMakeModel(String make, String model) {
+    public List<Vehicle> getVehicleByMakeModel(String makeModel) {
     }
 
-    public List<Vehicle> getVehicleByYear(int minYear, int maxYear) {
+    public List<Vehicle> getVehicleByYear(Integer minYear, Integer maxYear) {
     }
 
     public List<Vehicle> getVehicleByColor(String color) {
     }
 
-    public List<Vehicle> getVehicleByMileage(int minMileage, int maxMileage) {
+    public List<Vehicle> getVehicleByMileage(Integer minMileage, Integer maxMileage) {
     }
 
     public List<Vehicle> getVehicleByType(String vehicleType) {
