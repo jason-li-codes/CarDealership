@@ -17,7 +17,6 @@ public class UserInterface {
         init();
 
         while (true) {
-
             System.out.printf("""
                     Hello, welcome to %s!
                     What would you like to do today?
@@ -64,5 +63,59 @@ public class UserInterface {
         } while (string.isEmpty());
         return string;
     }
+
+    private double getValidDouble() {
+
+        String userInputDouble = null;
+        Double inputDouble = null;
+
+        while (true) {
+            userInputDouble = input.nextLine(); // Accepts next user input as a String
+            inputDouble = attemptParseDouble(userInputDouble); // calls attemptParseDouble to check for valid double
+            if (inputDouble != null) {
+                inputDouble = Math.round(inputDouble * 100) / 100.0;  // Rounds it to 2 decimal points if parse succeeds
+                return inputDouble;
+            } else {
+                System.out.println("Sorry I don't know what you mean, please try again.");
+            }
+        }
+    }
+
+    private Double attemptParseDouble(String num) {
+
+        try {
+            return Double.parseDouble(num); // Tries to parse input String as a double number
+        } catch (Exception e) {
+            return null; // Returns null if parse attempt fails
+        }
+    }
+
+    private void processGetByPriceRequest() {
+
+        // Gets the minimum and maximum price from the user
+        Double minPriceInput = null;
+        System.out.println("What is the minimum transaction you are looking for?");
+        String amountMinInputStr = input.nextLine().trim();
+        if (!amountMinInputStr.isEmpty()) {
+            minPriceInput = attemptParseDouble(amountMinInputStr);
+        }
+        Double maxPriceInput = null;
+        System.out.println("What is the maximum transaction you are looking for?");
+        String amountMaxInputStr = input.nextLine().trim();
+        if (!amountMaxInputStr.isEmpty()) {
+            maxPriceInput = attemptParseDouble(amountMaxInputStr);
+        }
+        // Swaps minimum and maximum if necessary
+        if (minPriceInput != null && maxPriceInput != null && minPriceInput > maxPriceInput) {
+            Double temp = minPriceInput;
+            minPriceInput = maxPriceInput;
+            maxPriceInput = temp;
+        }
+
+        dealership.getVehicleByPrice(minPriceInput, maxPriceInput);
+    }
+
+
+
 
 }
