@@ -1,13 +1,15 @@
 package com.pluralsight;
 
 import java.io.BufferedReader;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 
 public class DealershipFileManager {
 
-    public Dealership getDealership() {
+    public static Dealership getDealership() {
 
         try (BufferedReader bufReader = new BufferedReader(new FileReader("inventory.csv"))) {
             // Reads the first line containing Dealership details
@@ -50,7 +52,21 @@ public class DealershipFileManager {
 
     public void saveDealership(Dealership dealership) {
 
+        try (BufferedWriter bufWriter = new BufferedWriter(new FileWriter("inventory.csv"))) {
+            // Writes header for CSV file
+            bufWriter.write(String.join("|", dealership.getName(), dealership.getAddress(), dealership.getPhone() + "\n"));
+            for (Vehicle vehicle : dealership.getAllVehicles()) { // Writes each vehicle to file
+                bufWriter.write(String.join("|", Integer.toString(vehicle.getVin()),
+                        Integer.toString(vehicle.getYear()), vehicle.getMake(), vehicle.getModel(),
+                        vehicle.getVehicleType(), vehicle.getColor(), Integer.toString(vehicle.getOdometer()),
+                        Double.toString(vehicle.getPrice())) + "\n");
+            }
+            System.out.println("File updated successfully.");
+        } catch (FileNotFoundException e) { // Handles FileNotFoundException
+            System.out.println("Sorry, there's a problem finding the file, please try again later.");
+        } catch (IOException e) { // Handles other IOExceptions
+            System.out.println("Sorry, there's a problem writing the file, please try again later.");
+        }
     }
-
 
 }
