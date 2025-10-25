@@ -50,7 +50,7 @@ public class DealershipFileManager {
         return null;
     }
 
-    public void saveDealership(Dealership dealership) {
+    public static void saveDealership(Dealership dealership) {
 
         try (BufferedWriter bufWriter = new BufferedWriter(new FileWriter("inventory.csv"))) {
             // Writes header for CSV file
@@ -61,11 +61,11 @@ public class DealershipFileManager {
                         vehicle.getVehicleType(), vehicle.getColor(), Integer.toString(vehicle.getOdometer()),
                         Double.toString(vehicle.getPrice())) + "\n");
             }
-            System.out.println("File updated successfully.");
+            System.out.println("Inventory updated successfully.");
         } catch (FileNotFoundException e) { // Handles FileNotFoundException
-            System.out.println("Sorry, there's a problem finding the file, please try again later.");
+            System.out.println("Sorry, there's a problem finding the inventory, please try again later.");
         } catch (IOException e) { // Handles other IOExceptions
-            System.out.println("Sorry, there's a problem writing the file, please try again later.");
+            System.out.println("Sorry, there's a problem updating the inventory, please try again later.");
         }
     }
 
