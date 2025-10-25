@@ -156,7 +156,7 @@ public class UserInterface {
 
     private void processGetByYearRequest() {
 
-        // Gets the minimum and maximum price from the user
+        // Gets the minimum and maximum year from the user
         Integer minYearInput = null;
         System.out.println("Enter minimum year:");
         String minYearInputStr = input.nextLine().trim();
@@ -181,7 +181,7 @@ public class UserInterface {
 
     private void processGetByColorRequest() {
 
-        // Gets the make/model input from the user, converting it to lowercase for case-insensitive comparison
+        // Gets the color input from the user, converting it to lowercase for case-insensitive comparison
         System.out.println("Enter color:");
         String colorInput = input.nextLine().trim().toLowerCase();
 
@@ -190,7 +190,7 @@ public class UserInterface {
 
     private void processGetByMileageRequest() {
 
-        // Gets the minimum and maximum price from the user
+        // Gets the minimum and maximum mileage from the user
         Integer minMileageInput = null;
         System.out.println("Enter minimum year:");
         String minMileageInputStr = input.nextLine().trim();
@@ -215,7 +215,7 @@ public class UserInterface {
 
     private void processGetByVehicleTypeRequest() {
 
-        // Gets the make/model input from the user, converting it to lowercase for case-insensitive comparison
+        // Gets the vehicle type input from the user, converting it to lowercase for case-insensitive comparison
         System.out.println("Enter vehicle type:");
         String typeInput = input.nextLine().trim().toLowerCase();
 
@@ -262,7 +262,9 @@ public class UserInterface {
             switch (removeOption) {
                 case 'Y':
                     dealership.addVehicle(addedVehicle);
-                    break;
+                    DealershipFileManager.saveDealership(dealership);
+                    System.out.println("Vehicle successfully added.");
+                    return;
                 case 'N':
                     continue;
                 case 'X':
@@ -311,7 +313,9 @@ public class UserInterface {
             switch (removeOption) {
                 case 'Y':
                     dealership.removeVehicle(chosenVehicle.get(0));
-                    break;
+                    DealershipFileManager.saveDealership(dealership);
+                    System.out.println("Vehicle successfully removed.");
+                    return;
                 case 'N':
                     continue;
                 case 'X':
