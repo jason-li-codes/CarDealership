@@ -1,8 +1,7 @@
 package com.pluralsight;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.Scanner;
+import java.time.LocalDate;
+import java.util.*;
 
 public class UserInterface {
 
@@ -298,6 +297,8 @@ public class UserInterface {
                 case 'X':
                     System.out.println("Returning to main menu...");
                     return;
+                default:
+                    System.out.println("Invalid choice. Please select a valid option.");
             }
         }
     }
@@ -354,13 +355,18 @@ public class UserInterface {
     }
 
     private void processGetAllContractsRequest() {
-        if (contractList.isEmpty()) {
+        displayListContract(contractList);
+    }
+
+    private void displayListContract(List<Contract> contracts) {
+
+        if (contracts.isEmpty()) {
             System.out.println("There are no contracts to display.");
         } else {
             System.out.printf("%-8s %-12s %-20s %-25s %-10s %-8s %-10s %-10s %-10s %-10s %-12s\n",
                     "Type", "Date", "Customer Name", "Email", "VIN", "Year", "Make", "Model", "Price", "Total", "Monthly");
             System.out.println("+--------+------------+--------------------+-------------------------+----------+--------+----------+----------+----------+----------+------------+");
-            for (Contract c : contractList) {
+            for (Contract c : contracts) {
                 System.out.printf("%-8s %-12s %-20s %-25s %-10d %-8d %-10s %-10s %10.2f %10.2f %10.2f\n",
                         (c instanceof SalesContract ? "SALE" : "LEASE"), c.getContractDate(), c.getCustomerName(),
                         c.getCustomerEmail(), c.getVehicleSold().getVin(), c.getVehicleSold().getYear(),
@@ -368,13 +374,120 @@ public class UserInterface {
                         c.getTotalPrice(), c.getMonthlyPayment()
                 );
             }
-            System.out.println("+-----+----------+------+------------+---------------+---------------+------------+----------+----------+");
+            System.out.println("+--------+------------+--------------------+-------------------------+----------+--------+----------+----------+----------+----------+------------+");
         }
     }
 
     private void processSignNewContractRequest() {
-        
-        
+
+        System.out.println("""
+                ======================CONTRACT MENU======================
+                What kind of contract are you hoping to sign?
+                (S) Sales contract
+                (L) Lease contract
+                """);
+        char contractMenuOption = getValidString().charAt(0);
+
+        LocalDate contractDate = LocalDate.now();
+        System.out.println("What is your name?");
+        String customerName = getValidString();
+        System.out.println("What is your email?");
+        String customerEmail = getValidString();
+
+        Vehicle chosenVehicle = null;
+        while (true) {
+            System.out.println("What is the VIN of the vehicle you would like to sign for?");
+            int vin = getValidInt();
+            for (Vehicle v : dealership.getAllVehicles()) {
+                if (v.getVin() == vin) {
+                    chosenVehicle = v;
+                }
+            }
+            if (chosenVehicle == null) {
+                System.out.println("""
+                        That vehicle does not exist in our system.
+                        (T) Try another VIN
+                        (X) Exit to main menu
+                        """);
+            } else {
+                List<Vehicle> chosenVehicleList = Collections.singletonList(chosenVehicle);
+                displayList(chosenVehicleList);
+                System.out.println("""
+                        Is this the vehicle you would like to sign for?
+                        (Y) Yes
+                        (N) No, I need to select a different vehicle
+                        (X) Exit to main menu
+                        """);
+            }
+            char contractSignOption = getValidString().charAt(0);
+            switch (contractSignOption) {
+                case 'Y':
+                    break;
+                case 'T':
+                case 'N':
+                    continue;
+                case 'X':
+                    System.out.println("Returning to main menu...");
+                    return;
+            }
+        }
+
+        switch (contractMenuOption) {
+            case 'S':
+                processSignNewSalesContract(contractDate, customerName, customerEmail, chosenVehicle);
+                break;
+            case 'L':
+                processSignNewLeaseContract(contractDate, customerName, customerEmail, chosenVehicle);
+                break;
+            default:
+                System.out.println("Invalid choice. Please select a valid option.");
+
+        }
+    }
+
+    private void processSignNewSalesContract(LocalDate contractDate, String customerName,
+                                             String customerEmail, Vehicle vehicle) {
+
+        System.out.println("""
+                Are you open to financing your new vehicle?
+                (Y) Yes
+                (N) No
+                """);
+        char SalesContractSignOption = getValidString().charAt(0);
+        boolean isFinanced = false;
+        switch (SalesContractSignOption) {
+            case 'Y':
+                isFinanced = true;
+            case 'N':
+                break;
+            default:
+                System.out.println("Invalid choice. Please select a valid option.");
+        }
+
+        SalesContract newContract = new SalesContract(contractDate, customerName, customerEmail, vehicle, isFinanced);
+        List<Contract> newContractList = Collections.singletonList(newContract);
+        displayListContract(newContractList);
+        System.out.println("""
+                Is all this information correct?
+                (Y) Yes
+                (N) No, I need to re-enter information
+                """);
+        char SalesContractConfirmOption = getValidString().charAt(0);
+        switch (SalesContractConfirmOption) {
+            case 'Y':
+                contractList.add(newContract);
+                ContractFileManager.saveContracts((ArrayList<Contract>) contractList);
+                System.out.println("Contract saved successfully. Returning to main menu....");
+            case 'N':
+                return;
+            default:
+                System.out.println("Invalid choice. Please select a valid option.");
+        }
+    }
+
+    private static void processSignNewLeaseContract(LocalDate contractDate, String customerName,
+                                                    String customerEmail, Vehicle vehicle) {
+
     }
 
 }
