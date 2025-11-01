@@ -5,7 +5,6 @@ import java.time.LocalDate;
 public class SalesContract extends Contract {
 
     private boolean isFinanced;
-    private boolean isPriceHigh = vehicleSold.getPrice() >= 10000;
 
     public SalesContract(LocalDate contractDate, String customerName,
                          String customerEmail, Vehicle vehicleSold, boolean isFinanced) {
@@ -13,17 +12,33 @@ public class SalesContract extends Contract {
         this.isFinanced = isFinanced;
     }
 
+    private final double recordingFee = 100;
+    private final boolean isPriceHigh = vehicleSold.getPrice() >= 10000;
+    private final double processingFee = (isPriceHigh) ? 495 : 295;
+
+    public boolean isFinanced() {
+        return isFinanced;
+    }
+
+    public void setFinanced(boolean financed) {
+        isFinanced = financed;
+    }
+
     public double getSalesTax() {
         double salesTax = 0.05;
         return vehicleSold.getPrice() * salesTax;
     }
 
+    public double getRecordingFee() {
+        return recordingFee;
+    }
+
+    public double getProcessingFee() {
+        return processingFee;
+    }
+
     @Override
     public double getTotalPrice() {
-
-        double recordingFee = 100;
-        double processingFee = (isPriceHigh) ? 495 : 295;
-
         return vehicleSold.getPrice() + getSalesTax() + recordingFee + processingFee;
         }
 
@@ -31,7 +46,7 @@ public class SalesContract extends Contract {
     public double getMonthlyPayment() {
 
         if (isFinanced) {
-            double principal = vehicleSold.getPrice();
+            double principal = getTotalPrice();
             double interestAnnual = (isPriceHigh) ? 4.25 : 5.25;
             double loanLengthYears = (isPriceHigh) ? 4 : 2;
             // changes interest to a decimal and loan length to be in months
