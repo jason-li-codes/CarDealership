@@ -21,24 +21,24 @@ public class ContractFileManager {
                 String contractType = info[0];
                 LocalDate contractDate = LocalDate.parse(info[1]);
                 String customerName = info[2];
-                String customerEmail = info[2];
+                String customerEmail = info[3];
                 Vehicle vehicleSold = getVehicleSold(info);
 
                 if (Objects.equals(contractType, "SALE")) {
-                    double salesTaxAmount = Double.parseDouble(info[11]);
-                    double recordingFee = Double.parseDouble(info[12]);
-                    double processingFee = Double.parseDouble(info[13]);
-                    double totalPrice = Double.parseDouble(info[14]);
-                    boolean isFinanced = Objects.equals(info[15], "YES");
-                    double monthlyPayment = Double.parseDouble(info[16]);
+                    double salesTaxAmount = Double.parseDouble(info[12]);
+                    double recordingFee = Double.parseDouble(info[13]);
+                    double processingFee = Double.parseDouble(info[14]);
+                    double totalPrice = Double.parseDouble(info[15]);
+                    boolean isFinanced = Objects.equals(info[16], "YES");
+                    double monthlyPayment = Double.parseDouble(info[17]);
 
                     contracts.add(new SalesContract(contractDate, customerName, customerEmail, vehicleSold,
                             salesTaxAmount, recordingFee, processingFee, totalPrice, isFinanced, monthlyPayment));
                 } else {
-                    double expectedEndingValue = Double.parseDouble(info[11]);
-                    double leaseFee = Double.parseDouble(info[12]);
-                    double totalPrice = Double.parseDouble(info[13]);
-                    double monthlyPayment = Double.parseDouble(info[14]);
+                    double expectedEndingValue = Double.parseDouble(info[12]);
+                    double leaseFee = Double.parseDouble(info[13]);
+                    double totalPrice = Double.parseDouble(info[14]);
+                    double monthlyPayment = Double.parseDouble(info[15]);
                     contracts.add(new LeaseContract(contractDate, customerName, customerEmail, vehicleSold,
                             expectedEndingValue, leaseFee, totalPrice, monthlyPayment));
                 }
@@ -58,14 +58,14 @@ public class ContractFileManager {
     }
 
     private static Vehicle getVehicleSold(String[] info) {
-        int vin = Integer.parseInt(info[3]);
-        int year = Integer.parseInt(info[4]);
-        String make = info[5];
-        String model = info[6];
-        String vehicleType = info[7];
-        String color = info[8];
-        int odometer = Integer.parseInt(info[9]);
-        double vehiclePrice = Double.parseDouble(info[10]);
+        int vin = Integer.parseInt(info[4]);
+        int year = Integer.parseInt(info[5]);
+        String make = info[6];
+        String model = info[7];
+        String vehicleType = info[8];
+        String color = info[9];
+        int odometer = Integer.parseInt(info[10]);
+        double vehiclePrice = Double.parseDouble(info[11]);
         return new Vehicle(vin, year, make, model, vehicleType, color, odometer, vehiclePrice);
     }
 
