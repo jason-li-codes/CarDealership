@@ -1,9 +1,6 @@
 package com.pluralsight;
 
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Objects;
@@ -72,6 +69,18 @@ public class ContractFileManager {
         return new Vehicle(vin, year, make, model, vehicleType, color, odometer, vehiclePrice);
     }
 
+    private static void saveContracts(ArrayList<Contract> contracts) {
 
+        try (BufferedWriter bufWriter = new BufferedWriter(new FileWriter("contracts.csv"))) {
+            for (Contract contract : contracts) { // Writes each Contract to file
+                bufWriter.write(contract.toCsvFormat() + "\n");
+            }
+            System.out.println("Contracts file updated successfully.");
+        } catch (FileNotFoundException e) { // Handles FileNotFoundException
+            System.out.println("Sorry, there's a problem finding the contracts file, please try again later.");
+        } catch (IOException e) { // Handles other IOExceptions
+            System.out.println("Sorry, there's a problem updating the contracts file, please try again later.");
+        }
+    }
 
 }
