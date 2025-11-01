@@ -29,7 +29,7 @@ public class UserInterface {
                     (2) Search vehicles by specification
                     (3) Add a vehicle to the dealership
                     (4) Remove a vehicle from the dealership
-                    (5) See contracts
+                    (5) See all contracts
                     (6) Sign new contract
                     (0) Exit dealership program
                     """, dealership.getName());
@@ -40,7 +40,7 @@ public class UserInterface {
                 case '2' -> searchSubMenu();
                 case '3' -> processAddVehicleRequest();
                 case '4' -> processRemoveVehicleRequest();
-                case '5' -> processGetContractsRequest();
+                case '5' -> processGetAllContractsRequest();
                 case '6' -> processSignNewContractRequest();
                 case '0' -> {
                     System.out.println("EXITING PROGRAM....");
@@ -351,6 +351,30 @@ public class UserInterface {
                     return;
             }
         }
+    }
+
+    private void processGetAllContractsRequest() {
+        if (contractList.isEmpty()) {
+            System.out.println("There are no contracts to display.");
+        } else {
+            System.out.printf("%-8s %-12s %-20s %-25s %-10s %-8s %-10s %-10s %-10s %-10s %-12s\n",
+                    "Type", "Date", "Customer Name", "Email", "VIN", "Year", "Make", "Model", "Price", "Total", "Monthly");
+            System.out.println("+--------+------------+--------------------+-------------------------+----------+--------+----------+----------+----------+----------+------------+");
+            for (Contract c : contractList) {
+                System.out.printf("%-8s %-12s %-20s %-25s %-10d %-8d %-10s %-10s %10.2f %10.2f %10.2f\n",
+                        (c instanceof SalesContract ? "SALE" : "LEASE"), c.getContractDate(), c.getCustomerName(),
+                        c.getCustomerEmail(), c.getVehicleSold().getVin(), c.getVehicleSold().getYear(),
+                        c.getVehicleSold().getMake(), c.getVehicleSold().getModel(), c.getVehicleSold().getPrice(),
+                        c.getTotalPrice(), c.getMonthlyPayment()
+                );
+            }
+            System.out.println("+-----+----------+------+------------+---------------+---------------+------------+----------+----------+");
+        }
+    }
+
+    private void processSignNewContractRequest() {
+        
+        
     }
 
 }
