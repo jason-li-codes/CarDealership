@@ -25,25 +25,28 @@ public class ContractFileManager {
                 LocalDate contractDate = LocalDate.parse(info[1]);
                 String customerName = info[2];
                 String customerEmail = info[2];
-                int vin = Integer.parseInt(info[3]);
-                int year = Integer.parseInt(info[4]);
-                String make = info[5];
-                String model = info[6];
-                String vehicleType = info[7];
-                String color = info[8];
-                int odometer = Integer.parseInt(info[9]);
-                double vehiclePrice = Double.parseDouble(info[10]);
-                Vehicle vehicleSold = new Vehicle(vin, year, make, model, vehicleType, color, odometer, vehiclePrice);
+                Vehicle vehicleSold = getVehicleSold(info);
 
                 if (Objects.equals(contractType, "SALE")) {
+                    double salesTaxAmount = Double.parseDouble(info[11]);
+                    double recordingFee = Double.parseDouble(info[12]);
+                    double processingFee = Double.parseDouble(info[13]);
+                    double totalPrice = Double.parseDouble(info[14]);
                     boolean isFinanced = Objects.equals(info[15], "YES");
-                    contracts.add(new SalesContract(contractDate, customerName, customerEmail, vehicleSold, isFinanced));
+                    double monthlyPayment = Double.parseDouble(info[16]);
+
+                    contracts.add(new SalesContract(contractDate, customerName, customerEmail, vehicleSold,
+                            salesTaxAmount, recordingFee, processingFee, totalPrice, isFinanced, monthlyPayment));
                 } else {
-                    contracts.add(new LeaseContract())
+                    double expectedEndingValue = Double.parseDouble(info[11]);
+                    double leaseFee = Double.parseDouble(info[12]);
+                    double totalPrice = Double.parseDouble(info[13]);
+                    double monthlyPayment = Double.parseDouble(info[14]);
+                    contracts.add(new LeaseContract(contractDate, customerName, customerEmail, vehicleSold,
+                            expectedEndingValue, leaseFee, totalPrice, monthlyPayment));
                 }
-                // Creates a new Contract object with the extracted information and adds it to List
             }
-            return dealership;
+            return contracts;
         } catch (FileNotFoundException e) { // Exits application if FileNotFoundException is reached
             System.out.println("Sorry, there's a problem finding your file, please try again later.");
             e.getStackTrace();
@@ -56,6 +59,19 @@ public class ContractFileManager {
         }
         return null;
     }
+
+    private static Vehicle getVehicleSold(String[] info) {
+        int vin = Integer.parseInt(info[3]);
+        int year = Integer.parseInt(info[4]);
+        String make = info[5];
+        String model = info[6];
+        String vehicleType = info[7];
+        String color = info[8];
+        int odometer = Integer.parseInt(info[9]);
+        double vehiclePrice = Double.parseDouble(info[10]);
+        return new Vehicle(vin, year, make, model, vehicleType, color, odometer, vehiclePrice);
+    }
+
 
 
 }

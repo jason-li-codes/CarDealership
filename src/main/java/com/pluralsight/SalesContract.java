@@ -7,17 +7,30 @@ public class SalesContract extends Contract {
     private double salesTaxAmount;
     private double recordingFee;
     private double processingFee;
+    private double totalPrice;
     private boolean isFinanced;
+    private double monthlyPayment;
 
+    public SalesContract(LocalDate contractDate, String customerName, String customerEmail,
+                         Vehicle vehicleSold, boolean isFinanced) {
+        super(contractDate, customerName, customerEmail, vehicleSold);
+        setSalesTaxAmount();
+        setRecordingFee();
+        setProcessingFee();
+        setTotalPrice();
+        setMonthlyPayment();
+    }
 
     public SalesContract(LocalDate contractDate, String customerName,
                          String customerEmail, Vehicle vehicleSold, double salesTaxAmount, double recordingFee,
-                         double processingFee, boolean isFinanced) {
+                         double processingFee, double totalPrice, boolean isFinanced, double monthlyPayment) {
         super(contractDate, customerName, customerEmail, vehicleSold);
         this.salesTaxAmount = salesTaxAmount;
         this.recordingFee = recordingFee;
         this.processingFee = processingFee;
+        this.totalPrice = totalPrice;
         this.isFinanced = isFinanced;
+        this.monthlyPayment = monthlyPayment;
     }
 
     private final boolean isPriceHigh = vehicleSold.getPrice() >= 10000;
@@ -39,8 +52,16 @@ public class SalesContract extends Contract {
         return salesTaxAmount;
     }
 
+    public void setRecordingFee() {
+        this.recordingFee = 100;
+    }
+
     public double getRecordingFee() {
         return recordingFee;
+    }
+
+    public void setProcessingFee() {
+        this.processingFee = (isPriceHigh) ? 495 : 295;
     }
 
     public double getProcessingFee() {
@@ -49,11 +70,21 @@ public class SalesContract extends Contract {
 
     @Override
     public double getTotalPrice() {
-        return vehicleSold.getPrice() + getSalesTaxAmount() + recordingFee + processingFee;
-        }
+        return totalPrice;
+    }
+
+    @Override
+    public void setTotalPrice() {
+        this.totalPrice = vehicleSold.getPrice() + getSalesTaxAmount() + recordingFee + processingFee;
+    }
 
     @Override
     public double getMonthlyPayment() {
+        return this.monthlyPayment;
+    }
+
+    @Override
+    public void setMonthlyPayment() {
 
         if (isFinanced) {
             double principal = getTotalPrice();
@@ -63,10 +94,10 @@ public class SalesContract extends Contract {
             double interest = interestAnnual / 100 / 12;
             double loanLengthMonths = loanLengthYears * 12;
             // calculates monthly payment
-            return principal * ((interest * Math.pow((1 + interest), loanLengthMonths)) /
+            this.monthlyPayment = principal * ((interest * Math.pow((1 + interest), loanLengthMonths)) /
                     (Math.pow((1 + interest), loanLengthMonths) - 1));
         } else {
-            return 0;
+            this.monthlyPayment = 0;
         }
     }
 

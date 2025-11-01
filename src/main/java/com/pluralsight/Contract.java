@@ -50,6 +50,10 @@ public abstract class Contract {
 
     abstract double getTotalPrice();
 
+    abstract void setTotalPrice();
+
     abstract double getMonthlyPayment();
+
+    abstract void setMonthlyPayment();
 
 }
