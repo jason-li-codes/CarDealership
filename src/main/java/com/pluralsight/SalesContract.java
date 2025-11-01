@@ -4,17 +4,23 @@ import java.time.LocalDate;
 
 public class SalesContract extends Contract {
 
+    private double salesTaxAmount;
+    private double recordingFee;
+    private double processingFee;
     private boolean isFinanced;
 
+
     public SalesContract(LocalDate contractDate, String customerName,
-                         String customerEmail, Vehicle vehicleSold, boolean isFinanced) {
+                         String customerEmail, Vehicle vehicleSold, double salesTaxAmount, double recordingFee,
+                         double processingFee, boolean isFinanced) {
         super(contractDate, customerName, customerEmail, vehicleSold);
+        this.salesTaxAmount = salesTaxAmount;
+        this.recordingFee = recordingFee;
+        this.processingFee = processingFee;
         this.isFinanced = isFinanced;
     }
 
-    private final double recordingFee = 100;
     private final boolean isPriceHigh = vehicleSold.getPrice() >= 10000;
-    private final double processingFee = (isPriceHigh) ? 495 : 295;
 
     public boolean isFinanced() {
         return isFinanced;
@@ -24,9 +30,13 @@ public class SalesContract extends Contract {
         isFinanced = financed;
     }
 
-    public double getSalesTax() {
-        double salesTax = 0.05;
-        return vehicleSold.getPrice() * salesTax;
+    public void setSalesTaxAmount() {
+        double salesTaxPercentage = 0.05;
+        this.salesTaxAmount = vehicleSold.getPrice() * salesTaxPercentage;
+    }
+
+    public double getSalesTaxAmount() {
+        return salesTaxAmount;
     }
 
     public double getRecordingFee() {
@@ -39,7 +49,7 @@ public class SalesContract extends Contract {
 
     @Override
     public double getTotalPrice() {
-        return vehicleSold.getPrice() + getSalesTax() + recordingFee + processingFee;
+        return vehicleSold.getPrice() + getSalesTaxAmount() + recordingFee + processingFee;
         }
 
     @Override
