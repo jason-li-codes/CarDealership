@@ -70,4 +70,26 @@ public class LeaseContract extends Contract {
                 (Math.pow((1 + interest), loanLengthMonths) - 1));
     }
 
+    @Override
+    public String toCsvFormat() {
+        return String.join("|",
+                "LEASE",
+                contractDate.toString(),
+                customerName,
+                customerEmail,
+                Integer.toString(vehicleSold.getVin()),
+                Integer.toString(vehicleSold.getYear()),
+                vehicleSold.getMake(),
+                vehicleSold.getModel(),
+                vehicleSold.getVehicleType(),
+                vehicleSold.getColor(),
+                Integer.toString(vehicleSold.getOdometer()),
+                String.format("%.2f", vehicleSold.getPrice()),
+                String.format("%.2f", expectedEndingValue),
+                String.format("%.2f", leaseFee),
+                String.format("%.2f", totalPrice),
+                String.format("%.2f", monthlyPayment)
+        );
+    }
+
 }

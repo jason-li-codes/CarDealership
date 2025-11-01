@@ -101,4 +101,30 @@ public class SalesContract extends Contract {
         }
     }
 
+    @Override
+    public String toCsvFormat() {
+
+        String isFinancedStr = isFinanced ? "YES" : "NO";
+        return String.join("|",
+                "SALE",
+                contractDate.toString(),
+                customerName,
+                customerEmail,
+                Integer.toString(vehicleSold.getVin()),
+                Integer.toString(vehicleSold.getYear()),
+                vehicleSold.getMake(),
+                vehicleSold.getModel(),
+                vehicleSold.getVehicleType(),
+                vehicleSold.getColor(),
+                Integer.toString(vehicleSold.getOdometer()),
+                String.format("%.2f", vehicleSold.getPrice()),
+                String.format("%.2f", salesTaxAmount),
+                String.format("%.2f", recordingFee),
+                String.format("%.2f", processingFee),
+                String.format("%.2f", totalPrice),
+                isFinancedStr,
+                String.format("%.2f", monthlyPayment)
+        );
+    }
+
 }

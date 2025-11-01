@@ -56,4 +56,6 @@ public abstract class Contract {
 
     abstract void setMonthlyPayment();
 
+    abstract String toCsvFormat();
+
 }
