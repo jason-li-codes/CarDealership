@@ -7,10 +7,12 @@ import java.util.Scanner;
 public class UserInterface {
 
     private Dealership dealership;
+    private List<Contract> contractList;
     private Scanner input;
 
     private void init() {
         this.dealership = DealershipFileManager.getDealership();
+        this.contractList = ContractFileManager.getContracts();
         input = new Scanner(System.in);
     }
 
@@ -21,30 +23,25 @@ public class UserInterface {
         while (true) {
             System.out.printf("""
                     Hello, welcome to %s!
+                    ======================MAIN MENU======================
                     What would you like to do today?
-                    (1) See vehicles by price
-                    (2) See vehicles by make/model
-                    (3) See vehicles by year
-                    (4) See vehicles by color
-                    (5) See vehicles by mileage
-                    (6) See vehicles by vehicle type
-                    (7) See all vehicles
-                    (8) Add a vehicle to the dealership
-                    (9) Remove a vehicle from the dealership
+                    (1) See all vehicles
+                    (2) Search vehicles by specification
+                    (3) Add a vehicle to the dealership
+                    (4) Remove a vehicle from the dealership
+                    (5) See contracts
+                    (6) Sign new contract
                     (0) Exit dealership program
                     """, dealership.getName());
 
             char menuOption = getValidString().charAt(0);
             switch (menuOption) {
-                case '1' -> processGetByPriceRequest();
-                case '2' -> processGetByMakeModelRequest();
-                case '3' -> processGetByYearRequest();
-                case '4' -> processGetByColorRequest();
-                case '5' -> processGetByMileageRequest();
-                case '6' -> processGetByVehicleTypeRequest();
-                case '7' -> processGetAllVehiclesRequest();
-                case '8' -> processAddVehicleRequest();
-                case '9' -> processRemoveVehicleRequest();
+                case '1' -> processGetAllVehiclesRequest();
+                case '2' -> searchSubMenu();
+                case '3' -> processAddVehicleRequest();
+                case '4' -> processRemoveVehicleRequest();
+                case '5' -> processGetContractsRequest();
+                case '6' -> processSignNewContractRequest();
                 case '0' -> {
                     System.out.println("EXITING PROGRAM....");
                     input.close();
@@ -115,6 +112,37 @@ public class UserInterface {
             return Integer.parseInt(num); // Tries to parse input String as an int number
         } catch (Exception e) {
             return null; // Returns null if parse attempt fails
+        }
+    }
+
+    private void searchSubMenu() {
+        while (true) {
+            System.out.println("""
+                    ======================SEARCH MENU======================
+                    What specification would you like to use to search?
+                    (1) See vehicles by price
+                    (2) See vehicles by make/model
+                    (3) See vehicles by year
+                    (4) See vehicles by color
+                    (5) See vehicles by mileage
+                    (6) See vehicles by vehicle type
+                    (0) Return to main menu
+                    """);
+
+            char menuOption = getValidString().charAt(0);
+            switch (menuOption) {
+                case '1' -> processGetByPriceRequest();
+                case '2' -> processGetByMakeModelRequest();
+                case '3' -> processGetByYearRequest();
+                case '4' -> processGetByColorRequest();
+                case '5' -> processGetByMileageRequest();
+                case '6' -> processGetByVehicleTypeRequest();
+                case '0' -> {
+                    System.out.println("Returning to main menu....");
+                    return;
+                }
+                default -> System.out.println("Invalid choice. Please select a valid option.");
+            }
         }
     }
 
