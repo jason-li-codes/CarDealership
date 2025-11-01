@@ -1,2 +1,16 @@
-SALE|2021-09-28|Fred Wyatt|fred@texas.com|10112|1993|Ford|Explorer|SUV|Red|525123|995.00|49.75|100.00|295.00|1439.75|NO|0.00
-LEASE|2021-09-28|Charles Westly|Charles@texas.com|37846|2021|Chevrolet|Silverado|truck|Black|2750|31995.00|15997.50|2239.65|18237.15|540.72
+SALE|2021-11-15|Dana Wyatt|dana@texas.com|10112|1993|Ford|Explorer|SUV|Red|525123|995.00|49.75|100.00|295.00|1439.75|NO|0.00
+LEASE|2022-02-15|Zachary Westly|zach@texas.com|37846|2021|Chevrolet|Silverado|truck|Black|2750|31995.00|15997.50|2239.65|18237.15|540.72
+SALE|2022-05-15|Sara Gold|sara@nevada.com|10347|1998|Honda|Civic|sedan|blue|628745|1595.00|79.75|100.00|295.00|2069.75|YES|46.31
+LEASE|2022-08-15|Mikaela Clarke|mikaela@arizona.com|27839|2022|Toyota|Camry|sedan|white|3400|22995.00|11497.50|1609.65|13095.15|395.24
+SALE|2022-11-15|Michael Green|michael@california.com|27356|2000|BMW|5 Series|sedan|black|201020|4500.00|225.00|100.00|295.00|5120.00|NO|0.00
+LEASE|2023-02-15|Olivia Miller|olivia@colorado.com|10293|2023|Ford|Mustang|sports|yellow|500|39995.00|19997.50|2799.65|22797.15|689.45
+SALE|2023-05-15|James Larson|james@texas.com|91827|2015|Audi|Q7|SUV|silver|615380|22995.00|1149.75|100.00|495.00|25139.75|YES|560.16
+LEASE|2023-08-15|Hannah Rivera|hannah@florida.com|13257|2024|Honda|Pilot|SUV|green|4700|42995.00|21497.50|2999.65|24497.15|711.99
+SALE|2023-11-15|Ryan Davidson|ryan@utah.com|56123|2002|Chevrolet|Tahoe|SUV|orange|402510|8450.00|422.50|100.00|295.00|9267.50|YES|199.45
+LEASE|2024-02-15|Sophia Adams|sophia@newyork.com|78450|2023|Nissan|Altima|sedan|blue|3500|25995.00|12997.50|1819.65|14817.15|430.61
+SALE|2024-05-15|David Young|david@oregon.com|46230|2007|Jeep|Wrangler|SUV|green|189400|15795.00|789.75|100.00|495.00|16779.75|NO|0.00
+LEASE|2024-08-15|Liam Mitchell|liam@washington.com|28395|2025|Tesla|Model S|electric|red|1200|79995.00|39997.50|5599.65|45597.15|1362.41
+SALE|2025-01-15|Madison Hughes|madison@texas.com|95120|2016|Kia|Sorento|SUV|gray|178600|15995.00|799.75|100.00|295.00|17089.75|YES|395.22
+LEASE|2025-04-15|Elijah Carter|elijah@florida.com|27416|2024|Ram|1500|truck|white|7200|49995.00|24997.50|3499.65|28497.15|820.29
+SALE|2025-07-15|Isabella Scott|isabella@california.com|76349|2013|Ford|F-150|truck|red|265490|24995.00|1249.75|100.00|495.00|26239.75|NO|0.00
+LEASE|2025-10-15|Benjamin Harris|benjamin@colorado.com|90284|2024|BMW|X5|SUV|blue|3500|74995.00|37497.50|5249.65|42247.15|1237.85
