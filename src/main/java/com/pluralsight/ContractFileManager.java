@@ -69,7 +69,7 @@ public class ContractFileManager {
         return new Vehicle(vin, year, make, model, vehicleType, color, odometer, vehiclePrice);
     }
 
-    private static void saveContracts(ArrayList<Contract> contracts) {
+    public static void saveContracts(ArrayList<Contract> contracts) {
 
         try (BufferedWriter bufWriter = new BufferedWriter(new FileWriter("contracts.csv"))) {
             for (Contract contract : contracts) { // Writes each Contract to file
